@@ -6,18 +6,27 @@
 //  Copyright © 2020 Chandni Rajasekaran. All rights reserved.
 //
 
+import GoogleSignIn
 import UIKit
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+   
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        FirebaseApp.configure()
+        GIDSignIn.sharedInstance()?.clientID = "891704774486-hooqjhjiqi7dh2il9m2h2uhvphkas1so.apps.googleusercontent.com"
+        
         return true
     }
 
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return GIDSignIn.sharedInstance().handle(url)
+    }
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
