@@ -6,9 +6,9 @@
 //  Copyright © 2020 Chandni Rajasekaran. All rights reserved.
 //
 
-import RealmSwift
 import UIKit
 import Firebase
+
 
 
 
@@ -17,8 +17,14 @@ class DataViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var testButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
-    private let realm = try! Realm()
     private var data = [PurchaseItems]()
+    var db =  Firestore.firestore()
+    
+    static let dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        return dateFormatter
+    }()
     
     override func viewWillAppear(_ animated: Bool) {
             DispatchQueue.main.async { [weak self] in
@@ -31,11 +37,12 @@ class DataViewController: UIViewController, UITableViewDelegate, UITableViewData
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.viewWillAppear(true)
         super.viewDidLoad()
-        data = realm.objects(PurchaseItems.self).map( {$0} )
+        print("reloading")
+        //data = realm.objects(PurchaseItems.self).map( {$0} )
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.delegate = self
         tableView.dataSource = self
-
+        refresh()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -79,8 +86,49 @@ class DataViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func refresh() {
-        data = realm.objects(PurchaseItems.self).map( {$0} )
-        tableView.reloadData()
+        if(Auth.auth().currentUser?.email == nil) {
+            db.collection("googleUser").getDocuments { [self] (snapshot, err) in
+                self.data.removeAll()
+                  if let err = err {
+                      print("Error getting documents: \(err)")
+                  } else {
+                      for document in snapshot!.documents {
+                        let price1 = document.get("price") as! String
+                        let text1 = document.get("text") as! String
+                        let date1 = document.get("date") as! String
+                        let id = document.get("id") as! String
+                        let save  = PurchaseItems()
+                        save.item = text1
+                        save.date = date1
+                        save.price = price1
+                        save.docId = id
+                            self.data.append(save)
+                        tableView.reloadData()
+                      }
+                  }
+            }
+        } else {
+        db.collection(Auth.auth().currentUser!.email!).getDocuments { [self] (snapshot, err) in
+            self.data.removeAll()
+              if let err = err {
+                  print("Error getting documents: \(err)")
+              } else {
+                  for document in snapshot!.documents {
+                    let price1 = document.get("price") as! String
+                    let text1 = document.get("text") as! String
+                    let date1 = document.get("date") as! String
+                    let id = document.get("id") as! String
+                    let save  = PurchaseItems()
+                    save.item = text1
+                    save.date = date1
+                    save.price = price1
+                    save.docId = id 
+                        self.data.append(save)
+                    tableView.reloadData()
+                  }
+              }
+        }
+           
     }
-
+    }
 }
