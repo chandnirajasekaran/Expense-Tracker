@@ -10,31 +10,32 @@
 import UIKit
 import GoogleSignIn
 import FirebaseAuth
+import Firebase
 
 class LoginViewController: UIViewController, UITextFieldDelegate, GIDSignInDelegate {
 
     @IBOutlet weak var email: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet var signInButton: GIDSignInButton!
+    var userId = ""
     
-   
     override func viewDidLoad() {
         view.setGradientBackground(colorOne: UIColor(red:70.0/255.0, green: 67.0/255.0, blue:66.0/255.0, alpha:1.0), colorTwo: UIColor(red:109.0/255.0, green: 107.0/255.0, blue:107.0/255.0, alpha:1.0), colorThree: UIColor(red:70.0/255.0, green: 67.0/255.0, blue:66.0/255.0, alpha:1.0))
         super.viewDidLoad()
         GIDSignIn.sharedInstance()?.delegate = self
         GIDSignIn.sharedInstance()?.presentingViewController = self
-
     }
     
     // code to keep user signed-in
-   // override func viewDidAppear(_ animated: Bool) {
+   /* override func viewDidAppear(_ animated: Bool) {
       // checkUserInfo()
-   // }
+     } */
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
     }
+    
     
     @IBAction func loginTapped(_ sender: Any) {
         validateFields()
@@ -83,18 +84,21 @@ class LoginViewController: UIViewController, UITextFieldDelegate, GIDSignInDeleg
             present(vc, animated: true)
         }
     }
+    
 }
 
 extension LoginViewController {
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if error != nil{
-            print("User email: \(user.profile.email ?? "No email")")
         } else {
+            print("User email: \(user.profile.email ?? "No email")")
+            userId = user.profile.email
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(identifier: "tab")
             vc.modalPresentationStyle = .overFullScreen
             present(vc, animated: true)
         }
     }
+    
     
 }
