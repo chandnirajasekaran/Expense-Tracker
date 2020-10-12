@@ -17,8 +17,6 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         view.setGradientBackground(colorOne: UIColor(red:70.0/255.0, green: 67.0/255.0, blue:66.0/255.0, alpha:1.0), colorTwo: UIColor(red:109.0/255.0, green: 107.0/255.0, blue:107.0/255.0, alpha:1.0), colorThree: UIColor(red:70.0/255.0, green: 67.0/255.0, blue:66.0/255.0, alpha:1.0))
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
     
 
@@ -36,7 +34,6 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
         signUP()
     }
     
-   
     
     @IBAction func alreadyHaveAccountLoginTapped(_ sender: Any) {
         
