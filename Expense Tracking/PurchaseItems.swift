@@ -13,6 +13,7 @@ import Firebase
 
 class PurchaseItems: Object {
     @objc dynamic var price: String = ""
+    @objc dynamic var docId: String = ""
     @objc dynamic var item: String = ""
-    @objc dynamic var date: Date = Date()
+    @objc dynamic var date: String = ""
 }
