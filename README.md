@@ -21,7 +21,7 @@ financially independent lifestyle in college. This app allows users to store the
 
 **Manually launch application**
 1. Download **ALL** the files from this repository into a new Xcode project, using the "Download Zip" feature.
-2. In order to install required CocoaPods, navigate to the project directory in terminal. 
+2. In order to install required CocoaPods, first navigate to the project directory in terminal. 
 3. Run `pod install` to download dependencies.
 4. Launch Xcode and run application on connected device. 
 
