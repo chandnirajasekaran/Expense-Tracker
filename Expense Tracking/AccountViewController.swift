@@ -30,7 +30,6 @@ class AccountViewController: UIViewController {
         if(Auth.auth().currentUser?.email == nil) {
             GIDSignIn.sharedInstance()?.signOut()
         } else {
-        print("INSIDE HEHEHEH")
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
